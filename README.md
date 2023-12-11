@@ -5,11 +5,13 @@
 
 ## Screenshots
 
-![App Screenshot](https://github.com/Js-bro/HyprV1/blob/main/Screenshots/1.png?raw=true)
+![App Screenshot](Screenshots/1.png)
 
-![App Screenshot](https://github.com/Js-bro/HyprV1/blob/main/Screenshots/3.png?raw=true)
+![App Screenshot](Screenshots/2.png)
 
-![App Screenshot](https://github.com/Js-bro/HyprV1/blob/main/Screenshots/10.png?raw=true)
+![App Screenshot](Screenshots/3.png)
+
+![App Screenshot](Screenshots/4.png)
 
 ### Main Components:
 
