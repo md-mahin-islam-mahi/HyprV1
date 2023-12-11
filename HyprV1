@@ -1,0 +1,364 @@
+#!/bin/bash
+
+###### Mahins Hyprland v1 installation script ######
+####################################################
+
+### Because I'm on a Desktop Computer and I don't have a laptop, I could not test scripts for the blurtooth brightness control and other festures...
+
+### I have took some of the scripts and made some changes from "Sol Does Tech" and "JaKooLit" hyprland dotfiles. here are the links of their dotfiles.
+
+### JaKooLit's dotfiles are here
+https://github.com/JaKooLit/Hyprland-v4
+
+### Sol Does Tech's dotfiles
+https://github.com/SolDoesTech/HyprV2/tree/main
+
+######################################################################
+##################### Here starts the installation ###################
+######################################################################
+
+# set some colors
+CNT="[\e[1;36mNOTE\e[0m]"
+COK="[\e[1;32mOK\e[0m]"
+CER="[\e[1;31mERROR\e[0m]"
+CAT="[\e[1;37mATTENTION\e[0m]"
+# CWR="[\e[1;35mWARNING\e[0m]"
+CAC="[\e[1;33mACTION\e[0m]"
+
+#clear the screen
+clear
+
+### Ask user for permition...###
+echo -e "$CNT - Here starts the hyprland installation script. This may ask for your root password to install some necessary packages.This script is not supported Nvidia GPU's and Asus ROG Laptops....You may have read from my GitHub...
+\n"
+
+sleep 3
+
+clear
+
+### Ask user for the confirmation...###
+echo -e "$CAT - Would you like to continue with the installer script? [ y/n ]"
+read -n1 -rep "Select: " ok_script
+if [[ $ok_script == "Y" || $ok_script == "y" ]]; then
+    echo -e "$COK - Starting install script.."
+else
+    echo -e "$CNT - This script would now exit, no changes were made to your system. Exiting from the script..."
+    exit 1
+fi
+
+echo -e "$CNT - This script will run some commands that require sudo. You will be prompted to enter your password.
+If you are worried about entering your password then you may want to review the content of the script."
+
+sleep 3
+clear
+
+########## Asking somd prompts ############
+## AUR Helper
+echo -e "$CNT - Select aur helper:\n1) yay\n2) paru"
+read -n1 -rep "Enter option number : " AUR_HELPER
+
+## Install Packages
+echo -e "$CNT - Would you like to install the packages? [ y/n ]"
+read -n1 -rep "Select: " INST_PKGS
+
+## If Bluetooth and brightnessctl
+echo -e "$CNT - Would like to install with brightness controller and bluetooth? [ y/n ]"
+read -n1 -rep "Select: " DEVICE
+
+## Installing openbangla keyboard and ibus
+echo -e "$CNT - Would like to install Openbangla keyboard and ibus to write in Bangla? [ y/n ]"
+read -n1 -rep "Select: " BANGLA
+
+## Copy configs
+echo -e "$CNT - Would you like to copy config files? [ y/n ]"
+read -n1 -rep "Select: " CFG
+
+## Config sddm theme
+echo -e "$CNT - Would you like to config sddm theme? [ y/n ]"
+read -n1 -rep "Select: " SDDM_CFG
+
+## Install zsh, oh-my-zsh and powerleven10k theme
+echo -e "$CNT - Would like to install zsh, oh-my-zsh and powerlevel10k theme on your system? [ y/n ]"
+read -n1 -rep "Select: " zsh
+
+## Config Vs Code theme
+echo -e "$CNT - Would you like to configure Vs-Code theme? [ y/n ]"
+read -n1 -rep "Select: " code
+
+## Config GTK themes
+echo -e "$CNT - Would like to install gtk light and dark and qt5 theme on your system? [ y/n ]"
+read -n1 -rep "Select: " theme
+
+#### Check for yay or paru ####
+# Check for AUR helper and install if not found
+ISAUR=$(command -v yay || command -v paru)
+
+if [ -n "$ISAUR" ]; then
+    echo -e "$COK - AUR helper was located, moving on.\n"
+    sleep 2
+    clear
+else
+    #################################################
+    ############ Installing AUR Helper ##############
+    #################################################
+
+    if [[ $AUR_HELPER == "1" ]]; then
+        echo -e "$CAC - Installing yay.."
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        makepkg -si --noconfirm
+
+    elif [[ $AUR_HELPER == "2" ]]; then
+        echo -e "$CAC - Installing paru.."
+        git clone https://aur.archlinux.org/paru.git
+        cd paru
+        makepkg -si --noconfirm
+
+    else
+        echo -e "$CER - Invalid option,, Exiting script. Please re-execute the script and select between [ 1/2 ]"
+        sleep 2
+        exit 1
+    fi
+fi
+
+# Update system before proceeding
+echo -e "$CAC - Updating the full system before proceeding to the next step..."
+ISAUR=$(command -v yay || command -v paru)
+
+$ISAUR -Syu --noconfirm
+echo -e "$COK - The system has been updated successfully, proceeding to the next step..."
+
+##### Script was successful #####
+clear
+
+#### Stage 2.1, Installing packages (Main pacmages) ####
+PACKAGE_MAN=$(command -v pacman || command -v yay || command -v paru)
+
+if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
+    #Stage 1
+    echo -e "\n$CNT - Stage 1 - Installing main components, this may take a while..."
+
+    for SOFTWR in hyprland xdg-desktop-portal-hyprland dunst kitty alacritty waybar wofi swaylock thunar wget dolphin swappy polkit-kde-agent; do
+        #First lets see if the package is there
+        if $PACKAGE_MAN -Qs $SOFTWR >/dev/null; then
+            echo -e "$COK - $SOFTWR is already installed."
+        else
+            echo -e "$CNT - Now installing $SOFTWR ..."
+            sudo pacman -S --noconfirm $SOFTWR
+            if pacman -Qs $SOFTWR >/dev/null; then
+                echo -e "$COK - $SOFTWR was installed."
+            else
+                echo -e "$CER - $SOFTWR install had failed :("
+            fi
+        fi
+    done
+
+    #### Installing packages from the AUR Helper ####
+    for AUR_SOFS in wlogout swww hyprshot swayimg update-grub cava tty-clock nitch qt5-svg qt5-quickcontrols2 qt5-graphicaleffects grimblast; do
+        #First lets see if the package is there
+        if $ISAUR -Qs $AUR_SOFS >/dev/null; then
+            echo -e "$COK - $AUR_SOFS is already installed."
+        else
+            echo -e "$CNT - Now installing $AUR_SOFS ..."
+            $ISAUR -S --noconfirm $AUR_SOFS
+            if $ISAUR -Qs $AUR_SOFS >/dev/null; then
+                echo -e "$COK - $AUR_SOFS was installed."
+            else
+                echo -e "$CER - $AUR_SOFS install had failed :("
+            fi
+        fi
+    done
+
+    #### Installing Openbangla Keyboard, ibus and bangla fonts ####
+    for WRITE_BANGLA in openbangla-keyboard ttf-freebanglafont; do
+        #First lets see if the package is there
+        if $ISAUR -Qs $WRITE_BANGLA >/dev/null; then
+            echo -e "$COK - $WRITE_BANGLA is already installed."
+        else
+            echo -e "$CNT - Now installing $WRITE_BANGLA ..."
+            $ISAUR -S --noconfirm $WRITE_BANGLA
+            if $ISAUR -Qs $WRITE_BANGLA >/dev/null; then
+                echo -e "$COK - $WRITE_BANGLA was installed."
+            else
+                echo -e "$CER - $WRITE_BANGLA install had failed :("
+            fi
+        fi
+    done
+
+    #### Stage 2.2, Installing packages (Necessary pacmages) ####
+    if [[ $DEVICE == "Y" || $DEVICE == "y" ]]; then
+        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm brightnessctl bluez bluez-utils blueman network-manager-applet thunar-archive-plugin btop ibus ntfs-3g os-prober; do
+            #First lets see if the package is there
+            if $PACKAGE_MAN -Qs $OTHER_PACKS >/dev/null; then
+                echo -e "$COK - $OTHER_PACKS is already installed."
+            else
+                echo -e "$CNT - Now installing $OTHER_PACKS ..."
+                sudo pacman -S --noconfirm $OTHER_PACKS
+                if pacman -Qs $OTHER_PACKS >/dev/null; then
+                    echo -e "$COK - $OTHER_PACKS was installed."
+                    # Start the bluetooth service
+                    echo -e "$CNT - Starting the Bluetooth Service..."
+                    sudo systemctl enable --now bluetooth.service
+                    sleep 2
+                else
+                    echo -e "$CER - $OTHER_PACKS install had failed :("
+                fi
+            fi
+        done
+
+    else
+        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm network-manager-applet thunar-archive-plugin btop ibus ntfs-3g os-prober; do
+            #First lets see if the package is there
+            if $PACKAGE_MAN -Qs $OTHER_PACKS >/dev/null; then
+                echo -e "$COK - $OTHER_PACKS is already installed."
+            else
+                echo -e "$CNT - Now installing $OTHER_PACKS ..."
+                sudo pacman -S --noconfirm $OTHER_PACKS
+                if pacman -Qs $OTHER_PACKS >/dev/null; then
+                    echo -e "$COK - $OTHER_PACKS was installed."
+                else
+                    echo -e "$CER - $OTHER_PACKS install had failed :("
+                fi
+            fi
+        done
+    fi
+
+    #### Stage 2.3, Installing packages (Fonts) ####
+    for FONTS in ttf-font-awesome ttf-cascadia-code ttf-jetbrains-mono-nerd ttf-meslo-nerd noto-fonts noto-fonts-emoji; do
+        #First lets see if the package is there
+        if $PACKAGE_MAN -Qs $FONTS >/dev/null; then
+            echo -e "$COK - $FONTS is already installed."
+        else
+            echo -e "$CNT - Now installing $FONTS ..."
+            sudo pacman -S --noconfirm $FONTS
+            if pacman -Qs $FONTS >/dev/null; then
+                echo -e "$COK - $FONTS was installed."
+            else
+                echo -e "$CER - $FONTS install had failed :("
+            fi
+        fi
+    done
+
+    if $ISAUR -Qs swaylock-effects-git >/dev/null; then
+        echo -e "$CNT - Now installing Swaylock-Effects, you may need to confirm manually"
+        sleep 1
+        $ISAUR -S swaylock-effects-git
+        if $ISAUR -Qs swaylock-effects-git >/dev/null; then
+            echo -e "$COK - Swaylock-effects way installed successfully!"
+        else
+            echo -e "$CER - Swaylock-effects could not installed :("
+        fi
+    fi
+else
+    echo -e "Exiting script for installation here."
+fi
+
+# Enable the sddm login manager service
+echo -e "$CNT - Enabling the SDDM Service..."
+sudo systemctl enable sddm
+sleep 2
+
+clear
+
+#### Script working till now ####
+
+### Copy Config Files ###
+mkdir -p ~/.config
+if [[ $CFG == "Y" || $CFG == "y" ]]; then
+    echo -e "$CNT - Copying config files..."
+    for DIR in alacritty cava hypr kitty neofetch swaylock waybar wlogout wofi; do
+        DIRPATH=~/.config/$DIR
+        if [ -d "$DIRPATH" ]; then
+            echo -e "$CAT - Config for $DIR located, backing up."
+            mv $DIRPATH $DIRPATH-back
+            echo -e "$COK - Backed up $DIR to $DIRPATH-back."
+        fi
+    done
+
+    sleep 1
+
+    clear
+
+    echo -e $'[\e[1;33mACTION\e[0m] - Copying dotfiles'
+    cp -r $HOME/HyprV1/hypr ~/.config/
+    ln -sf ~/.config/hypr/alacritty ~/.config/alacritty
+    ln -sf ~/.config/hypr/kitty ~/.config/kitty
+    ln -sf ~/.config/hypr/cava ~/.config/cava
+    ln -sf ~/.config/hypr/neofetch ~/.config/neofetch
+    ln -sf ~/.config/hypr/swaylock ~/.config/swaylock
+    ln -sf ~/.config/hypr/waybar ~/.config/waybar
+    ln -sf ~/.config/hypr/wlogout ~/.config/wlogout
+    ln -sf ~/.config/hypr/wofi ~/.config/wofi
+    ln -sf ~/.config/hypr/dunst ~/.config/dunst
+    sleep 1
+    echo -e "$CDN - Copying finished..."
+
+else
+    echo -e "$CER - Copying cancled"
+fi
+
+sleep 1
+
+# Adding all the scripts
+
+SCRIPT_DIR=~/.config/hypr/scripts/
+if [ -d $SCRIPT_DIR ]; then
+    # make all the scripts executable...
+    chmod +x $SCRIPT_DIR/*
+
+    echo -e "$COK - All the necessary scripts have been executable."
+
+    sleep 1
+else
+    echo -e "$CER - Could not find necessary scripts"
+fi
+
+WLDIR=/usr/share/wayland-sessions
+if [ -d "$WLDIR" ]; then
+    echo -e "$COK - $WLDIR found"
+else
+    echo -e "$CWR - $WLDIR NOT found, creating..."
+    sudo mkdir $WLDIR
+    sudo cp extras/hyprland.desktop /usr/share/wayland-sessions/
+fi
+clear
+
+INSTALL_DIR="$HOME"/HyprV1/install-scripts
+############ Enable SDDM Theme ###############
+##############################################
+if [[ $SDDM_CFG == "y" || $SDDM_CFG == "Y" ]]; then
+    source "$INSTALL_DIR"/sddm.sh
+else
+    echo -e "$CER - SDDM theme wont be installed"
+fi
+
+clear
+
+########################################################################
+#################### Installing zsh and oh-my-zsh ######################
+########################################################################
+if [[ $zsh == "y" || $zsh == "Y" ]]; then
+    source "$INSTALL_DIR"/zsh.sh
+else
+    echo -e "$CER - Won't install zsh, oh-my-zsh and powerlevel10k theme.. proceeding to next script"
+fi
+
+##############################################################
+################### Vs Code Theme Set ########################
+##############################################################
+if [[ $code == "y" || $code == "Y" ]]; then
+    source "$INSTALL_DIR"/code-oss.sh
+else
+    echo -e "$CER - Wont install Vs-code theme"
+fi
+
+############ GTK themes installation ##############
+###################################################
+if [[ $theme == "y" || $theme == "Y" ]]; then
+    echo -e "$CAC - Installing GTK theme.."
+    source "$INSTALL_DIR"/themes.sh
+else
+    echo -e "$CER - Wont install GTK theme, exiting from script.."
+fi
+
+############## Script exits here ################
