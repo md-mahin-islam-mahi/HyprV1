@@ -41,7 +41,7 @@ As I use only a Desktop Pc, I don't have any laptop. That's why I could not test
 - `swaylock-effects` - for swaylock effects
 - `cava` - for terminal based music visualizer
 - `dunst` - for notifications
-- `hyprshot` - for screenshot
+- `swappy` - for screenshot
 - `brightnessctl`  - for monitor and keyboard brightness - not needed for desktop
 - `nomacs` or `swayimg` - for image viewer 
 - `pamixer` - for volume control notification.
