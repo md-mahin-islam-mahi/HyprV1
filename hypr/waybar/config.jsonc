@@ -15,7 +15,7 @@
     "wlr/taskbar": {
 		"format": "{icon}",
 		"icon-size": 18,
-		"icon-theme": "Tela-circle-black",
+		"icon-theme": "Tela-circle-dracule",
         "spacing": 0,
 		"tooltip-format": "{title}",
 		"on-click": "activate",
