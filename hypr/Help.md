@@ -1,6 +1,7 @@
  ### Explore all the key binds used in this configuration.###
 
-## To open and closing a window
+## To open and close a window
+     = 
 - `Mod + k: ` Open Terminal (Alacritty)
 - `Mod + Shift + k: ` Open Terminal (Kitty)
 - `Mod + b: ` Open Browser (Firefox)
@@ -12,6 +13,7 @@
 - `Mod + x: ` Launch Wlogout
 - `Mod + c: ` Open VS Code
 - `Mod + q: ` Kill Active Window
+- `Mod + Shift + l`: Lock
 - `Mod + Shift + m: ` Exit Hyprland
 
 </br>
@@ -36,11 +38,10 @@
 
 
 ### Waybar click events...
+- `Ctrl + Exc:` Reload Waybar
 - Click on the Arch Linux logo: open Wofi
-- Click on the systems (cpu, temp, memory, disk), exec btop on kitty
 - Click on updates, exec kitty Update system
-- Click on music visualizer, exec cava on kitty
 - Click on the circle icon, toggle theme to dark and light
 - Click right on volume controller, exec, pavucontrol
-- Click right on calander, exec, gnome-calendar
+- Hover on clock, it shows the full calendar of the year
 - Click on the power icon, exec, wlogout

@@ -1,6 +1,17 @@
 <br>
 <h1 align = "center"> Arch Linux + Simple Hyprland Dotfiles</h1>
+<h2 align="center">Md. Mahin Islam Mahi</h2>
 </br>
+
+
+<div align="center">
+
+![GitHub last commit](https://img.shields.io/github/last-commit/md-mahin-islam-mahi/HyprV1?style=for-the-badge&color=b4befe) </br>
+![GitHub repo size](https://img.shields.io/github/repo-size/md-mahin-islam-mahi/HyprV1?style=for-the-badge&color=aba6f7)
+
+</br>
+</div>
+
 
 
 ## Screenshots
