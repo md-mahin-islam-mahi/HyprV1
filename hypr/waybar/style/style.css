@@ -29,12 +29,12 @@ tooltip label{
 
 #workspaces button {
     padding: 5px;
-    color: #313244;
+    color: #4f5064;
     margin-right: 5px;
 }
 
 #workspaces button.active {
-    color: #a6adc8;
+    color: #b8bfdd;
 }
 
 #workspaces button.focused {

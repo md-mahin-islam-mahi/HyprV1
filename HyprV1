@@ -138,7 +138,7 @@ if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
     #Stage 1
     echo -e "\n$CNT - Stage 1 - Installing main components, this may take a while..."
 
-    for SOFTWR in hyprland xdg-desktop-portal-hyprland dunst kitty alacritty waybar wofi swaylock thunar wget dolphin swappy polkit-kde-agent; do
+    for SOFTWR in hyprland xdg-desktop-portal-hyprland dunst kitty alacritty waybar wofi wget dolphin swappy polkit-kde-agent; do
         #First lets see if the package is there
         if $PACKAGE_MAN -Qs $SOFTWR >/dev/null; then
             echo -e "$COK - $SOFTWR is already installed."
@@ -154,7 +154,7 @@ if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
     done
 
     #### Installing packages from the AUR Helper ####
-    for AUR_SOFS in wlogout swww hyprshot swayimg update-grub cava tty-clock nitch qt5-svg qt5-quickcontrols2 qt5-graphicaleffects grimblast; do
+    for AUR_SOFS in wlogout swww hyprshot swayimg swaylock-effects-git qt5-svg qt5-quickcontrols2 qt5-graphicaleffects grimblast visual-studio-code-bin; do
         #First lets see if the package is there
         if $ISAUR -Qs $AUR_SOFS >/dev/null; then
             echo -e "$COK - $AUR_SOFS is already installed."
@@ -187,7 +187,7 @@ if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
 
     #### Stage 2.2, Installing packages (Necessary pacmages) ####
     if [[ $DEVICE == "Y" || $DEVICE == "y" ]]; then
-        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm brightnessctl bluez bluez-utils blueman network-manager-applet thunar-archive-plugin btop ibus ntfs-3g os-prober; do
+        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm brightnessctl bluez bluez-utils blueman network-manager-applet btop ibus ntfs-3g os-prober partitionmanager; do
             #First lets see if the package is there
             if $PACKAGE_MAN -Qs $OTHER_PACKS >/dev/null; then
                 echo -e "$COK - $OTHER_PACKS is already installed."
@@ -207,7 +207,7 @@ if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
         done
 
     else
-        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm network-manager-applet thunar-archive-plugin btop ibus ntfs-3g os-prober; do
+        for OTHER_PACKS in pavucontrol pamixer pacman-contrib lxappearance qt5ct kvantum sddm network-manager-applet btop ibus ntfs-3g os-prober; do
             #First lets see if the package is there
             if $PACKAGE_MAN -Qs $OTHER_PACKS >/dev/null; then
                 echo -e "$COK - $OTHER_PACKS is already installed."
@@ -238,17 +238,6 @@ if [[ $INST_PKGS == "Y" || $INST_PKGS == "y" ]]; then
             fi
         fi
     done
-
-    if $ISAUR -Qs swaylock-effects-git >/dev/null; then
-        echo -e "$CNT - Now installing Swaylock-Effects, you may need to confirm manually"
-        sleep 1
-        $ISAUR -S swaylock-effects-git
-        if $ISAUR -Qs swaylock-effects-git >/dev/null; then
-            echo -e "$COK - Swaylock-effects way installed successfully!"
-        else
-            echo -e "$CER - Swaylock-effects could not installed :("
-        fi
-    fi
 else
     echo -e "Exiting script for installation here."
 fi
@@ -328,8 +317,6 @@ INSTALL_DIR="$HOME"/HyprV1/install-scripts
 ##############################################
 if [[ $SDDM_CFG == "y" || $SDDM_CFG == "Y" ]]; then
     source "$INSTALL_DIR"/sddm.sh
-else
-    echo -e "$CER - SDDM theme wont be installed"
 fi
 
 clear
@@ -339,8 +326,6 @@ clear
 ########################################################################
 if [[ $zsh == "y" || $zsh == "Y" ]]; then
     source "$INSTALL_DIR"/zsh.sh
-else
-    echo -e "$CER - Won't install zsh, oh-my-zsh and powerlevel10k theme.. proceeding to next script"
 fi
 
 ##############################################################
@@ -348,8 +333,6 @@ fi
 ##############################################################
 if [[ $code == "y" || $code == "Y" ]]; then
     source "$INSTALL_DIR"/code-oss.sh
-else
-    echo -e "$CER - Wont install Vs-code theme"
 fi
 
 ############ GTK themes installation ##############
@@ -357,8 +340,6 @@ fi
 if [[ $theme == "y" || $theme == "Y" ]]; then
     echo -e "$CAC - Installing GTK theme.."
     source "$INSTALL_DIR"/themes.sh
-else
-    echo -e "$CER - Wont install GTK theme, exiting from script.."
 fi
 
 ############## Script exits here ################

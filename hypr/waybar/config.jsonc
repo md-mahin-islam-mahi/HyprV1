@@ -15,7 +15,7 @@
     "wlr/taskbar": {
 		"format": "{icon}",
 		"icon-size": 18,
-		"icon-theme": "Tela-circle-dracule",
+		"icon-theme": "Tela-circle-dracula",
         "spacing": 0,
 		"tooltip-format": "{title}",
 		"on-click": "activate",
@@ -42,6 +42,7 @@
     },
 
     "custom/ibus": {
+        "format": "{}󰙏",
         "exec": "sleep 0.1s && cat ~/.cache/ibus-layout",
         "on-click": "exec ~/.config/hypr/scripts/ibustoggle.sh",
         "interval": 3,

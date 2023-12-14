@@ -50,15 +50,15 @@ As I use only a Desktop Pc, I don't have any laptop. That's why I could not test
 - `swwww` - for wallpaper and wallpaper animation
 - `swaylock` - for lockscreen
 - `swaylock-effects` - for swaylock effects
-- `cava` - for terminal based music visualizer
 - `dunst` - for notifications
 - `swappy` - for screenshot
 - `brightnessctl`  - for monitor and keyboard brightness - not needed for desktop
-- `nomacs` or `swayimg` - for image viewer 
+- `swayimg` - for image viewer 
 - `pamixer` - for volume control notification.
 - `fonts` - required awesome fonts. AUR and official repo have
 - `pipewire` - needed pipewire pipewire-pulse pipewire-alsa
 - `lxappearence` - for gtk themes
+- `kvantum` - for gtk themes
  </br>
 
 ### Themes (Optional):
