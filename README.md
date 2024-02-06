@@ -1,3 +1,5 @@
+<h1 align="center">This script is no longer usable</h1>
+
 <br>
 <h1 align = "center"> Arch Linux + Simple Hyprland Dotfiles</h1>
 <h2 align="center">Md. Mahin Islam Mahi</h2>
